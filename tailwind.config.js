@@ -13,6 +13,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        green: {
+          happy: '#6FAE75',
+        },
         purple: {
           dark: '#2C0C6A',
           light: '#877E9E',
@@ -22,6 +25,8 @@ module.exports = {
         edge: '#E8E8E8',
         main: {
           light: '#8B8F96',
+          spark: '#F2F2F2',
+          grey: '#404040',
         },
       },
       outline: {
