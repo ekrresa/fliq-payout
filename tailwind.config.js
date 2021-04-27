@@ -24,6 +24,9 @@ module.exports = {
           light: '#8B8F96',
         },
       },
+      outline: {
+        solid: '1px solid #4305EB',
+      },
     },
   },
   variants: {
