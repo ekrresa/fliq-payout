@@ -1,6 +1,6 @@
-import { FormWrapper } from "./components/FormWrapper";
-import { NavBar } from "./components/NavBar";
-import { Amount } from "./views/Amount";
+import { FormWrapper } from './components/FormWrapper';
+import { NavBar } from './components/NavBar';
+import { Recipient } from './views/Recipient';
 
 function App() {
   return (
@@ -8,7 +8,7 @@ function App() {
       <NavBar />
 
       <FormWrapper>
-        <Amount />
+        <Recipient />
       </FormWrapper>
     </>
   );

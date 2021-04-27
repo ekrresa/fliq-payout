@@ -1,5 +1,4 @@
-import React from "react";
-import { Select } from "../Select";
+import { Select } from '../Select';
 
 interface Props {
   label: string;

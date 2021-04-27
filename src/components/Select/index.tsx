@@ -1,8 +1,8 @@
-import React from "react";
-import styled from "styled-components";
-import Dropd from "react-dropd";
+import React from 'react';
+import styled from 'styled-components';
+import Dropd from 'react-dropd';
 
-import { useCountries } from "./countryMap";
+import { useCountries } from './countryMap';
 
 export function Select() {
   const countries = useCountries();
