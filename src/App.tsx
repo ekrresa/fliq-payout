@@ -1,6 +1,6 @@
 import { FormWrapper } from './components/FormWrapper';
 import { NavBar } from './components/NavBar';
-import { Review } from './views/Review';
+import { Payment } from './views/Payment';
 
 function App() {
   return (
@@ -8,7 +8,7 @@ function App() {
       <NavBar />
 
       <FormWrapper>
-        <Review />
+        <Payment />
       </FormWrapper>
     </>
   );
