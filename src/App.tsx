@@ -1,6 +1,6 @@
 import { FormWrapper } from './components/FormWrapper';
 import { NavBar } from './components/NavBar';
-import { Recipient } from './views/Recipient';
+import { Review } from './views/Review';
 
 function App() {
   return (
@@ -8,7 +8,7 @@ function App() {
       <NavBar />
 
       <FormWrapper>
-        <Recipient />
+        <Review />
       </FormWrapper>
     </>
   );
