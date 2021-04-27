@@ -1,6 +1,6 @@
-import { FormWrapper } from "./components/FormWrapper";
-import { NavBar } from "./components/NavBar";
-import { Amount } from "./views/Amount";
+import { FormWrapper } from './components/FormWrapper';
+import { NavBar } from './components/NavBar';
+import { Amount } from './views/Amount';
 
 function App() {
   return (

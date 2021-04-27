@@ -1,6 +1,6 @@
-import Logo from "../../assets/images/logo.svg";
-import Close from "../../assets/images/close.svg";
-import styled from "styled-components";
+import Logo from '../../assets/images/logo.svg';
+import Close from '../../assets/images/close.svg';
+import styled from 'styled-components';
 
 export function NavBar() {
   return (
