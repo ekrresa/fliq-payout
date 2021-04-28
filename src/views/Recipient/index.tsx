@@ -5,7 +5,12 @@ import '@reach/tabs/styles.css';
 import { Button } from '../../components/Button';
 import { FormControl } from '../../components/FormControl';
 
-export function Recipient() {
+export default function Recipient() {
+  // TODO: Add e typings
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+  };
+
   return (
     <section>
       <h1 className="text-purple-dark text-2xl font-medium">Your Recipient</h1>
@@ -13,7 +18,7 @@ export function Recipient() {
 
       <hr className="my-6" />
 
-      <form>
+      <form onSubmit={handleSubmit}>
         <FormControl label="Their email (optional)" id="recipient_email" />
         <FormControl label="Full name of the account holder" id="recipient_name" />
 
@@ -45,7 +50,9 @@ export function Recipient() {
           </Tabs>
         </section>
 
-        <Button className="bg-purple-normal w-full mt-4 text-white text-base">Continue</Button>
+        <Button className="bg-purple-normal w-full mt-4 text-white text-base" type="submit">
+          Continue
+        </Button>
       </form>
     </section>
   );

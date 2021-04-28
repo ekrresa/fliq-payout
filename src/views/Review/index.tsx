@@ -1,7 +1,15 @@
+import { useHistory } from 'react-router';
+
 import { Button } from '../../components/Button';
 import { ReviewRow } from '../../components/ReviewRow';
 
-export function Review() {
+export default function Review() {
+  const history = useHistory();
+
+  const routeToPayment = () => {
+    history.push('/payment');
+  };
+
   return (
     <section>
       <h1 className="text-purple-dark text-2xl font-medium">
@@ -24,7 +32,10 @@ export function Review() {
       <ReviewRow eastText="Email Address" westText="johnny.gbadamosi@gmail.com" />
       <ReviewRow eastText="IBAN / Account number" westText="DE898919013902102" />
 
-      <Button className="bg-green-happy w-full mt-8 text-white text-base">
+      <Button
+        className="bg-green-happy w-full mt-8 text-white text-base"
+        handleClick={routeToPayment}
+      >
         Confirm and continue
       </Button>
     </section>

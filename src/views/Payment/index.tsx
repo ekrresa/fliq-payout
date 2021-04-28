@@ -1,11 +1,13 @@
 import * as React from 'react';
 import confetti from 'canvas-confetti';
+import { useHistory } from 'react-router';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
 import { Button } from '../../components/Button';
 
-export function Payment() {
+export default function Payment() {
+  const history = useHistory();
   const [value, setValue] = React.useState(0);
   const countdownRef = React.useRef<any>();
 
@@ -64,7 +66,14 @@ export function Payment() {
         )}
       </section>
 
-      <Button className="bg-green-happy w-full mt-8 text-white text-base">Go home</Button>
+      <Button
+        className="bg-green-happy w-full mt-8 text-white text-base"
+        handleClick={() => {
+          history.push('/');
+        }}
+      >
+        Go home
+      </Button>
     </section>
   );
 }
