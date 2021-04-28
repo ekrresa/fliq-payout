@@ -11,7 +11,7 @@ export function useCountries() {
           label: (
             <div className="flex items-center">
               <img className="rounded-full h-5 w-5 mr-2" src={imagePath} alt="" />
-              <span>{code}</span>
+              <span className="font-medium text-purple-gloom">{code}</span>
             </div>
           ),
           value: code,
