@@ -1,4 +1,4 @@
-import React from 'react';
+import { useHistory } from 'react-router';
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@reach/tabs';
 import '@reach/tabs/styles.css';
 
@@ -6,9 +6,11 @@ import { Button } from '../../components/Button';
 import { FormControl } from '../../components/FormControl';
 
 export default function Recipient() {
+  const history = useHistory();
   // TODO: Add e typings
   const handleSubmit = (e: any) => {
     e.preventDefault();
+    history.push('/?stage=review');
   };
 
   return (

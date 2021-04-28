@@ -7,7 +7,7 @@ export default function Review() {
   const history = useHistory();
 
   const routeToPayment = () => {
-    history.push('/payment');
+    history.push('/?stage=payment');
   };
 
   return (

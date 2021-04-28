@@ -9,7 +9,7 @@ export default function Amount() {
   const history = useHistory();
 
   const routeToRecipient = () => {
-    history.push('/recipient');
+    history.push('/?stage=recipient');
   };
 
   // TODO: Add e typings
