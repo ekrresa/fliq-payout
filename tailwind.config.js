@@ -12,6 +12,9 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
+      animation: {
+        'spin-slow': 'spin 5s linear infinite',
+      },
       colors: {
         green: {
           happy: '#6FAE75',
@@ -21,6 +24,7 @@ module.exports = {
           light: '#877E9E',
           normal: '#4305EB',
           accent: '#A98CF6',
+          gloom: '#372271',
         },
         edge: '#E8E8E8',
         main: {
@@ -28,6 +32,9 @@ module.exports = {
           spark: '#F2F2F2',
           grey: '#404040',
         },
+      },
+      minWidth: {
+        32: '8rem',
       },
       outline: {
         solid: '1px solid #4305EB',
