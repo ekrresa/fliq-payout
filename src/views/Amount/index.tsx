@@ -1,9 +1,8 @@
-import { useLocation, useHistory } from 'react-router';
-import qs from 'query-string';
+import { useHistory } from 'react-router';
 
 import { Button } from '../../components/Button';
-
 import { Input } from '../../components/Input';
+import { TransferDetails } from './TransferDetails';
 
 export default function Amount() {
   const history = useHistory();
@@ -24,7 +23,8 @@ export default function Amount() {
 
       <form className="mt-8" onSubmit={handleSubmit}>
         <Input label="You send" />
-        <br />
+        {/* <br /> */}
+        <TransferDetails />
         <Input label="Recipient gets" />
 
         <div className="grid grid-cols-2 gap-4 mt-8">
