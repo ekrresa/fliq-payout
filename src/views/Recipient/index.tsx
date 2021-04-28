@@ -3,6 +3,7 @@ import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@reach/tabs';
 import '@reach/tabs/styles.css';
 
 import { Button } from '../../components/Button';
+import { FormControl } from '../../components/FormControl';
 
 export function Recipient() {
   return (
@@ -13,25 +14,8 @@ export function Recipient() {
       <hr className="my-6" />
 
       <form>
-        <div className="mb-4">
-          <label className="block text-main-light text-lg mb-2" htmlFor="amount">
-            Their email (optional)
-          </label>
-          <input
-            className="block w-full focus:outline-solid px-2 py-3 border rounded"
-            id="amount"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-main-light text-lg mb-2" htmlFor="amount">
-            Full name of the account holder
-          </label>
-          <input
-            className="block w-full focus:outline-solid px-2 py-3 border rounded"
-            id="amount"
-          />
-        </div>
+        <FormControl label="Their email (optional)" id="recipient_email" />
+        <FormControl label="Full name of the account holder" id="recipient_name" />
 
         <h3 className="font-medium text-purple-dark text-lg">Bank details</h3>
 
@@ -40,45 +24,22 @@ export function Recipient() {
         <section>
           <Tabs>
             <TabList className="border-b bg-white">
-              <Tab className="px-8 pb-2">Inside Europe</Tab>
-              <Tab className="px-8 pb-2">Outside Europe</Tab>
+              <Tab className="px-8 pb-2 focus:outline-none">Inside Europe</Tab>
+              <Tab className="px-8 pb-2 focus:outline-none">Outside Europe</Tab>
             </TabList>
 
             <TabPanels className="mt-4">
               <TabPanel>
-                <div className="mb-4">
-                  <label className="block text-main-light text-lg mb-2" htmlFor="amount">
-                    IBAN
-                  </label>
-                  <input
-                    className="block w-full focus:outline-solid px-2 py-3 border rounded"
-                    id="amount"
-                    placeholder="DE98370440018929829032"
-                  />
-                </div>
+                <FormControl label="IBAN" id="iban" placeholder="DE98370440018929829032" />
               </TabPanel>
               <TabPanel>
-                <div className="mb-4">
-                  <label className="block text-main-light text-lg mb-2" htmlFor="amount">
-                    SWIFT / BIC code
-                  </label>
-                  <input
-                    className="block w-full focus:outline-solid px-2 py-3 border rounded"
-                    id="amount"
-                    placeholder="BUKBGB22"
-                  />
-                </div>
+                <FormControl label="SWIFT / BIC code" id="swift_code" placeholder="BUKBGB22" />
 
-                <div className="mb-4">
-                  <label className="block text-main-light text-lg mb-2" htmlFor="amount">
-                    IBAN / Account Number
-                  </label>
-                  <input
-                    className="block w-full focus:outline-solid px-2 py-3 border rounded"
-                    id="amount"
-                    placeholder="01234567891"
-                  />
-                </div>
+                <FormControl
+                  label="IBAN / Account Number"
+                  id="iban"
+                  placeholder="01234567891"
+                />
               </TabPanel>
             </TabPanels>
           </Tabs>
