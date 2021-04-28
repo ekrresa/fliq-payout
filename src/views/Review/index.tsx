@@ -1,7 +1,7 @@
 import { useHistory } from 'react-router';
 
 import { Button } from '../../components/Button';
-import { ReviewRow } from '../../components/ReviewRow';
+import { ReviewRow } from '../Recipient/ReviewRow';
 
 export default function Review() {
   const history = useHistory();

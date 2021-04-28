@@ -1,10 +1,10 @@
-import { Select } from '../Select';
+import { Select } from '../../components/Select';
 
 interface Props {
   label: string;
 }
 
-export function Input({ label }: Props) {
+export function InputSelect({ label }: Props) {
   return (
     <div className="flex focus-within:outline-solid px-4 py-2 border border-edge justify-between rounded">
       <div className="flex-1 mr-2">

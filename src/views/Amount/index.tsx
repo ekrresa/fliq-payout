@@ -1,7 +1,7 @@
 import { useHistory } from 'react-router';
 
 import { Button } from '../../components/Button';
-import { Input } from '../../components/Input';
+import { InputSelect } from './InputSelect';
 import { TransferDetails } from './TransferDetails';
 
 export default function Amount() {
@@ -22,10 +22,10 @@ export default function Amount() {
       <h2 className="text-purple-light text-sm">Send money internationally</h2>
 
       <form className="mt-8" onSubmit={handleSubmit}>
-        <Input label="You send" />
+        <InputSelect label="You send" />
         {/* <br /> */}
         <TransferDetails />
-        <Input label="Recipient gets" />
+        <InputSelect label="Recipient gets" />
 
         <div className="grid grid-cols-2 gap-4 mt-8">
           <Button className="border border-purple-normal text-purple-normal">
