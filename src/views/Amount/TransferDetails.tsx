@@ -1,10 +1,16 @@
 import styled from 'styled-components';
 
-export function TransferDetails() {
+interface Props {
+  transferFee: number;
+}
+
+export function TransferDetails({ transferFee }: Props) {
   return (
     <StyledParent>
       <div className="item">
-        <span className="inline-block min-w-32 text-main-light font-medium">3.56 USD</span>
+        <span className="inline-block min-w-32 text-main-light font-medium">
+          {transferFee} USD
+        </span>
         <span className="text-main-light">Transfer fee</span>
       </div>
       <div className="item">
