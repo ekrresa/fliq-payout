@@ -7,20 +7,20 @@ import { useCountries } from './utils/countryMap';
 interface Props {
   label: string;
   name: string;
-  handleChange: (data: ChangeProps) => void;
+  handleChange: (data: ChangeProps | null) => void;
   value?: string;
   readonly?: boolean;
 }
 
 export interface ChangeProps {
   amount?: string;
-  currency?: string;
-  name: string;
+  from_currency?: string;
+  to_currency?: string;
 }
 
 export function InputSelect({ label, name, handleChange, readonly, value }: Props) {
   const countries = useCountries();
-  const [data, setData] = useState<ChangeProps>({ name });
+  const [data, setData] = useState<ChangeProps | null>(null);
 
   useEffect(() => {
     handleChange(data);
@@ -38,7 +38,7 @@ export function InputSelect({ label, name, handleChange, readonly, value }: Prop
           onChange={e => {
             setData({ ...data, amount: e.target.value });
           }}
-          value={value ?? ''}
+          value={value || ''}
           readOnly={readonly}
         />
       </div>
@@ -49,7 +49,7 @@ export function InputSelect({ label, name, handleChange, readonly, value }: Prop
           isClearable={false}
           isSearchable
           onChange={(item: any) => {
-            setData({ ...data, currency: item.value });
+            setData({ ...data, [name]: item.value });
           }}
           name={name}
         />

@@ -1,24 +1,45 @@
 import styled from 'styled-components';
 
 interface Props {
+  amountToBeSent: number;
+  currency: string;
+  exchangeCurrency: string;
+  exchangeRate?: number;
+  defaultCurrency?: string;
+  defaultTransferFee: number;
   transferFee: number;
 }
 
-export function TransferDetails({ transferFee }: Props) {
+//TODO: Use display grid to create uniform separation
+export function TransferDetails({
+  amountToBeSent,
+  currency,
+  defaultCurrency = 'USD',
+  defaultTransferFee,
+  exchangeCurrency,
+  exchangeRate,
+  transferFee,
+}: Props) {
   return (
     <StyledParent>
       <div className="item">
         <span className="inline-block min-w-32 text-main-light font-medium">
-          {transferFee} USD
+          {transferFee && currency
+            ? transferFee + ' ' + currency
+            : defaultTransferFee + ' ' + defaultCurrency}
         </span>
         <span className="text-main-light">Transfer fee</span>
       </div>
       <div className="item">
-        <span className="inline-block min-w-32 text-main-light font-medium">996.31 EUR</span>
+        <span className="inline-block min-w-32 text-main-light font-medium">
+          {amountToBeSent} {currency}
+        </span>
         <span className="text-main-light">Amount we’ll convert</span>
       </div>
       <div className="item">
-        <span className="inline-block min-w-32 text-purple-gloom font-medium">1.65 EUR</span>
+        <span className="inline-block min-w-32 text-purple-gloom font-medium">
+          {exchangeRate} {exchangeCurrency}
+        </span>
         <span className="text-purple-gloom">Guaranteed rate (1hr)</span>
       </div>
     </StyledParent>
@@ -27,8 +48,8 @@ export function TransferDetails({ transferFee }: Props) {
 
 const StyledParent = styled.section`
   position: relative;
-  padding-top: 0.5em;
-  padding-bottom: 0.5em;
+  padding-top: 0.8em;
+  padding-bottom: 0.8em;
 
   &::after {
     content: '';
