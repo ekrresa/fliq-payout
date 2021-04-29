@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
+import { CheckoutProvider } from './shared/CheckoutContext';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './tailwind.output.css';
@@ -14,9 +15,11 @@ const queryClient = new QueryClient({
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <QueryClientProvider client={queryClient}>
-        <App />
-      </QueryClientProvider>
+      <CheckoutProvider>
+        <QueryClientProvider client={queryClient}>
+          <App />
+        </QueryClientProvider>
+      </CheckoutProvider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
