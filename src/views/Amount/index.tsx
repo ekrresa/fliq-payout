@@ -57,9 +57,11 @@ export default function Amount() {
     saveData({
       fromAmount,
       fromCurrency,
+      toAmount: exchangeData?.result,
       toCurrency,
       originalAmount,
       exchangeRate: exchangeData?.info?.rate,
+      transferFee: transferFeeData?.result,
     });
 
     // route to recipient view
