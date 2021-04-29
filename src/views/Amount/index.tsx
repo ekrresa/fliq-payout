@@ -7,6 +7,7 @@ import { Button } from '../../components/Button';
 import { ChangeProps, InputSelect } from './InputSelect';
 import { TransferDetails } from './TransferDetails';
 import { queryFixerAPI } from '../../helpers/axios';
+import { useCheckout } from '../../shared/CheckoutContext';
 
 const TRANSFER_FEE_IN_USD = 3.56;
 const FIXER_APIKEY = process.env.REACT_APP_FIXER_APIKEY;
@@ -14,11 +15,12 @@ const ONE_HOUR_IN_MILLISECONDS = 3600000;
 
 export default function Amount() {
   const history = useHistory();
+  const { saveData } = useCheckout();
 
   const [fromCurrency, setFromCurrency] = useState('');
   const [toCurrency, setToCurrency] = useState('');
   const [fromAmount, setFromAmount] = useState(0);
-  const [originalAmount, setOriginalAmount] = useState('');
+  const [originalAmount, setOriginalAmount] = useState(0);
 
   // Does conversion of amount between currencies chosen.
   // Rate is cached for 1 hour
@@ -48,13 +50,20 @@ export default function Amount() {
     { enabled: !!fromCurrency, staleTime: ONE_HOUR_IN_MILLISECONDS }
   );
 
-  const routeToRecipient = () => {
-    history.push('/?stage=recipient');
-  };
-
   // TODO: Add e typings
   const handleSubmit = (e: any) => {
     e.preventDefault();
+
+    saveData({
+      fromAmount,
+      fromCurrency,
+      toCurrency,
+      originalAmount,
+      exchangeRate: exchangeData?.info?.rate,
+    });
+
+    // route to recipient view
+    history.push('/?stage=recipient');
   };
 
   const handleInputSelect = useCallback(
@@ -68,7 +77,7 @@ export default function Amount() {
       }
 
       if (amount) {
-        setOriginalAmount(amount);
+        setOriginalAmount(Number(amount));
       }
 
       if (amount && transferFeeData) {
@@ -90,12 +99,7 @@ export default function Amount() {
       <h2 className="text-purple-light text-sm">Send money internationally</h2>
 
       <form className="mt-8" onSubmit={handleSubmit}>
-        <InputSelect
-          label="You send"
-          name="from_currency"
-          handleChange={handleInputSelect}
-          value={originalAmount}
-        />
+        <InputSelect label="You send" name="from_currency" handleChange={handleInputSelect} />
 
         {fetchingExchangeData ? (
           <div className="my-4 ml-4">
@@ -132,7 +136,7 @@ export default function Amount() {
           <Button className="border border-purple-normal text-purple-normal">
             Compare Rates
           </Button>
-          <Button className="bg-purple-normal text-white" handleClick={routeToRecipient}>
+          <Button className="bg-purple-normal text-white" type="submit">
             Continue
           </Button>
         </div>
