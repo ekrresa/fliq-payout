@@ -16,7 +16,6 @@ export default function Recipient() {
   const [accountNumber, setAccountNumber] = useState('');
   const [swiftCode, setSwiftCode] = useState('');
 
-  console.log(email);
   // TODO: Add e typings
   const handleSubmit = (e: any) => {
     e.preventDefault();
