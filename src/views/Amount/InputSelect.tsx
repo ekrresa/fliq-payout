@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import ReactSelect from 'react-select';
+import CurrencyInput from 'react-currency-input-field';
 import styled from 'styled-components';
 
 import { useCountries } from './utils/countryMap';
@@ -28,18 +29,22 @@ export function InputSelect({ label, name, handleChange, readonly, value }: Prop
 
   return (
     <div className="flex focus-within:outline-solid  border border-edge justify-between rounded">
-      <div className="flex-1 mr-2 px-4 py-4">
+      <div className="flex-1 mr-2 px-4 py-3">
         <label className="block text-main-light text-sm" htmlFor={name}>
           {label}
         </label>
-        <input
-          className="block w-full focus:outline-none disabled:bg-white"
+
+        <CurrencyInput
+          className="block w-full text-xl mt-1 focus:outline-none disabled:bg-white"
           id={name}
-          onChange={e => {
-            setData({ ...data, amount: e.target.value });
+          name={name}
+          placeholder=""
+          decimalsLimit={10}
+          onValueChange={value => {
+            setData({ ...data, amount: value });
           }}
-          value={value || ''}
           readOnly={readonly}
+          value={value}
         />
       </div>
 
