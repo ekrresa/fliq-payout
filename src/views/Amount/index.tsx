@@ -9,7 +9,7 @@ import { TransferDetails } from './TransferDetails';
 import { queryFixerAPI } from '../../helpers/axios';
 import { useCheckout } from '../../shared/CheckoutContext';
 
-const TRANSFER_FEE_IN_USD = 3.56;
+const TRANSFER_FEE = Number(process.env.REACT_APP_TRANSFER_FEE);
 const FIXER_APIKEY = process.env.REACT_APP_FIXER_APIKEY;
 const ONE_HOUR_IN_MILLISECONDS = 3600000;
 
@@ -38,12 +38,12 @@ export default function Amount() {
     }
   );
 
-  // Syncs transfer fee with fromCurrency using TRANSFER_FEE_IN_USD as base
+  // Syncs transfer fee with fromCurrency using TRANSFER_FEE as base
   const { data: transferFeeData } = useQuery(
     [
       'transferFee',
       {
-        url: `/convert?access_key=${FIXER_APIKEY}&from=USD&to=${fromCurrency}&amount=${TRANSFER_FEE_IN_USD}`,
+        url: `/convert?access_key=${FIXER_APIKEY}&from=USD&to=${fromCurrency}&amount=${TRANSFER_FEE}`,
       },
     ],
     queryFixerAPI,
@@ -116,7 +116,7 @@ export default function Amount() {
         ) : exchangeData ? (
           <TransferDetails
             currency={fromCurrency}
-            defaultTransferFee={TRANSFER_FEE_IN_USD}
+            defaultTransferFee={TRANSFER_FEE}
             transferFee={transferFeeData?.result}
             amountToBeSent={fromAmount}
             exchangeCurrency={toCurrency}

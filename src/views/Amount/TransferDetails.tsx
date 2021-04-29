@@ -10,11 +10,13 @@ interface Props {
   transferFee: number;
 }
 
+const TRANSFER_FEE_CURRENCY = process.env.REACT_APP_TRANSFER_FEE_CURRENCY;
+
 //TODO: Use display grid to create uniform separation
 export function TransferDetails({
   amountToBeSent,
   currency,
-  defaultCurrency = 'USD',
+  defaultCurrency = TRANSFER_FEE_CURRENCY,
   defaultTransferFee,
   exchangeCurrency,
   exchangeRate,
