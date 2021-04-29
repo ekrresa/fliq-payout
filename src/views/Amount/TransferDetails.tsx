@@ -24,25 +24,30 @@ export function TransferDetails({
 }: Props) {
   return (
     <StyledParent>
-      <div className="item">
-        <span className="inline-block min-w-32 text-main-light font-medium">
-          {transferFee && currency
-            ? transferFee + ' ' + currency
-            : defaultTransferFee + ' ' + defaultCurrency}
-        </span>
-        <span className="text-main-light">Transfer fee</span>
+      <div>
+        <div className="item">
+          <span className="inline-block text-main-light font-medium">
+            {transferFee && currency
+              ? transferFee + ' ' + currency
+              : defaultTransferFee + ' ' + defaultCurrency}
+          </span>
+        </div>
+        <div className="item">
+          <span className="inline-block min-w-32 text-main-light font-medium">
+            {amountToBeSent} {currency}
+          </span>
+        </div>
+        <div className="item">
+          <span className="inline-block min-w-32 text-purple-gloom font-medium">
+            {exchangeRate} {exchangeCurrency}
+          </span>
+        </div>
       </div>
-      <div className="item">
-        <span className="inline-block min-w-32 text-main-light font-medium">
-          {amountToBeSent} {currency}
-        </span>
-        <span className="text-main-light">Amount we’ll convert</span>
-      </div>
-      <div className="item">
-        <span className="inline-block min-w-32 text-purple-gloom font-medium">
-          {exchangeRate} {exchangeCurrency}
-        </span>
-        <span className="text-purple-gloom">Guaranteed rate (1hr)</span>
+
+      <div>
+        <div className="text-main-light row-details">Transfer fee</div>
+        <div className="text-main-light row-details">Amount we’ll convert</div>
+        <div className="text-purple-gloom row-details">Guaranteed rate (1hr)</div>
       </div>
     </StyledParent>
   );
@@ -52,6 +57,8 @@ const StyledParent = styled.section`
   position: relative;
   padding-top: 0.8em;
   padding-bottom: 0.8em;
+  display: grid;
+  grid-template-columns: auto 1fr;
 
   &::after {
     content: '';
@@ -64,7 +71,7 @@ const StyledParent = styled.section`
   }
 
   .item {
-    padding: 0.5rem 3rem;
+    padding: 0.5rem 2rem 0.5rem 3rem;
     position: relative;
 
     &::after {
@@ -77,5 +84,10 @@ const StyledParent = styled.section`
       border-radius: 50%;
       z-index: 1;
     }
+  }
+
+  .row-details {
+    padding: 0.5rem 0rem;
+    position: relative;
   }
 `;
