@@ -19,7 +19,7 @@ function CheckoutProvider({ children }: Props) {
   const [state, setState] = useState(initialState);
 
   const saveData = (data: any) => {
-    setState({ ...state, data });
+    setState({ ...state, ...data });
   };
 
   return (
