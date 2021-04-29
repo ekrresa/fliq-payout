@@ -10,6 +10,7 @@ module.exports = {
     ],
   },
   darkMode: false, // or 'media' or 'class'
+  important: true,
   theme: {
     extend: {
       animation: {
@@ -30,8 +31,12 @@ module.exports = {
         main: {
           light: '#8B8F96',
           spark: '#F2F2F2',
+          spark2: '#F4F3F8',
           grey: '#404040',
         },
+      },
+      maxWidth: {
+        9: '9rem',
       },
       minWidth: {
         32: '8rem',
