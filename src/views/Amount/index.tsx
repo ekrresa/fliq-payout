@@ -130,7 +130,7 @@ export default function Amount() {
   );
 
   return (
-    <section>
+    <section data-testid="amount-view">
       <h1 className="text-purple-dark text-lg font-medium">One-time Payout</h1>
       <h2 className="text-purple-light text-sm">Send money internationally</h2>
 
@@ -184,7 +184,11 @@ export default function Amount() {
           <Button className="border border-purple-normal text-purple-normal">
             Compare Rates
           </Button>
-          <Button className="bg-purple-normal text-white" type="submit">
+          <Button
+            className="bg-purple-normal text-white"
+            type="submit"
+            data-testid="amount-continue-btn"
+          >
             Continue
           </Button>
         </div>
@@ -193,7 +197,7 @@ export default function Amount() {
   );
 }
 
-const validationSchema = Yup.object({
+const validationSchema = Yup.object().shape({
   fromAmount: Yup.number()
     .positive('Please ensure you have entered a valid amount, and selected the currencies')
     .required('Please enter a valid amount'),
