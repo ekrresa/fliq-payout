@@ -1,4 +1,3 @@
-import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import '@testing-library/react/dont-cleanup-after-each';
 import { render, screen, cleanup } from '@testing-library/react';

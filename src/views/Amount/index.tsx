@@ -184,7 +184,11 @@ export default function Amount() {
           <Button className="border border-purple-normal text-purple-normal">
             Compare Rates
           </Button>
-          <Button className="bg-purple-normal text-white" type="submit">
+          <Button
+            className="bg-purple-normal text-white"
+            type="submit"
+            data-testid="amount-continue-btn"
+          >
             Continue
           </Button>
         </div>
