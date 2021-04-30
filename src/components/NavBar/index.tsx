@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 export function NavBar() {
   return (
-    <header className="bg-white p-6">
+    <header className="bg-white p-6" data-testid="navbar">
       <div className="mx-auto max-w-6xl flex justify-between items-center">
         <img className="w-20" src={Logo} alt="site logo" />
 
