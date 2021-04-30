@@ -34,7 +34,7 @@ export function TransferDetails({
         </div>
         <div className="item">
           <span className="inline-block min-w-32 text-main-light font-medium">
-            {amountToBeSent} {currency}
+            {new Intl.NumberFormat().format(amountToBeSent)} {currency}
           </span>
         </div>
         <div className="item">
