@@ -3,13 +3,10 @@ import { useHistory } from 'react-router';
 import { useCheckout } from '../../shared/CheckoutContext';
 import { Button } from '../../components/Button';
 import { ReviewRow } from './ReviewRow';
+import { isObjectEmpty } from '../../helpers/utils';
 
 function getFirstName(name: string) {
   return name.split(' ')[0];
-}
-
-function isObjectEmpty(obj: {}) {
-  return Object.keys(obj).length === 0;
 }
 
 export default function Review() {

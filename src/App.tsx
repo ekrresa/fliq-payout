@@ -15,13 +15,15 @@ function App() {
   const location = useLocation();
   const parsedString = (qs.parse(location.search) as unknown) as Record<string, string>;
 
+  const renderedComponent = resolveView(parsedString.stage);
+
   return (
     <>
       <NavBar />
 
       <Wrapper>
         <Suspense fallback={<Loader />}>
-          <Switch>{resolveView(parsedString.stage)}</Switch>
+          <Switch>{renderedComponent}</Switch>
         </Suspense>
       </Wrapper>
     </>

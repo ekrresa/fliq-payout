@@ -7,10 +7,11 @@ import '@reach/tabs/styles.css';
 import { Button } from '../../components/Button';
 import { FormControl } from '../../components/FormControl';
 import { useCheckout } from '../../shared/CheckoutContext';
+import { isObjectEmpty } from '../../helpers/utils';
 
 export default function Recipient() {
   const history = useHistory();
-  const { saveRecipientInfo } = useCheckout();
+  const { saveRecipientInfo, transfer } = useCheckout();
 
   const { handleBlur, handleSubmit, handleChange, errors, values, setErrors } = useFormik({
     initialValues: {
@@ -43,6 +44,11 @@ export default function Recipient() {
       history.push('/?stage=review');
     },
   });
+
+  if (isObjectEmpty(transfer)) {
+    history.push('/?stage=amount');
+    return null;
+  }
 
   return (
     <section>

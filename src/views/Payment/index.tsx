@@ -5,16 +5,19 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
 import { Button } from '../../components/Button';
+import { isObjectEmpty } from '../../helpers/utils';
+import { useCheckout } from '../../shared/CheckoutContext';
 
 export default function Payment() {
   const history = useHistory();
   const [value, setValue] = React.useState(0);
   const countdownRef = React.useRef<any>();
+  const { recipient, transfer } = useCheckout();
 
   React.useEffect(() => {
     const interval = setInterval(() => {
       setValue(v => v + 10);
-    }, 1000);
+    }, 400);
 
     countdownRef.current = interval;
 
@@ -43,6 +46,11 @@ export default function Payment() {
       }, 250);
     }
   }, [value]);
+
+  if (isObjectEmpty(transfer) || isObjectEmpty(recipient)) {
+    history.push('/');
+    return null;
+  }
 
   return (
     <section>
