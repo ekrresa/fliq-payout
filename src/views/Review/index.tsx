@@ -8,11 +8,20 @@ function getFirstName(name: string) {
   return name.split(' ')[0];
 }
 
+function isObjectEmpty(obj: {}) {
+  return Object.keys(obj).length === 0;
+}
+
 export default function Review() {
   const history = useHistory();
-  const checkout = useCheckout();
+  const { recipient, transfer } = useCheckout();
 
-  const routeToPayment = () => {
+  if (isObjectEmpty(recipient) || isObjectEmpty(transfer)) {
+    history.replace('/?stage=amount');
+    return null;
+  }
+
+  const routeToPaymentView = () => {
     history.push('/?stage=payment');
   };
 
@@ -27,34 +36,45 @@ export default function Review() {
       <section>
         <ReviewRow
           eastText="You send"
-          westText={checkout?.originalAmount + ' ' + checkout?.fromCurrency}
+          westText={
+            new Intl.NumberFormat().format(transfer.originalAmount) +
+            ' ' +
+            transfer.fromCurrency
+          }
           highlight
         />
         <ReviewRow
           eastText="Total fees (included)"
-          westText={checkout.transferFee + ' ' + checkout.fromCurrency}
+          westText={transfer.transferFee + ' ' + transfer.fromCurrency}
         />
         <ReviewRow
           eastText="Amount we’ll convert"
-          westText={checkout.fromAmount + ' ' + checkout.fromCurrency}
+          westText={
+            new Intl.NumberFormat().format(transfer.fromAmount) + ' ' + transfer.fromCurrency
+          }
         />
-        <ReviewRow eastText="Guaranteed rate" westText={checkout.exchangeRate} />
+        <ReviewRow eastText="Guaranteed rate" westText={transfer.exchangeRate} />
         <ReviewRow
-          eastText={getFirstName(checkout.name) + ' gets'}
-          westText={checkout.toAmount + ' ' + checkout.fromCurrency}
+          eastText={getFirstName(recipient.name) + ' gets'}
+          westText={
+            new Intl.NumberFormat().format(transfer.toAmount) + ' ' + transfer.toCurrency
+          }
           highlight
         />
       </section>
 
       <hr className="my-6" />
 
-      <ReviewRow eastText="Name" westText={checkout.name} />
-      <ReviewRow eastText="Email Address" westText={checkout.email} />
-      <ReviewRow eastText="IBAN / Account number" westText={checkout.accountNumber} />
+      <ReviewRow eastText="Name" westText={recipient.name} />
+      <ReviewRow eastText="Email Address" westText={recipient.email} />
+      <ReviewRow
+        eastText="IBAN / Account number"
+        westText={recipient.accountNumber || recipient.iban}
+      />
 
       <Button
         className="bg-green-happy w-full mt-8 text-white text-base"
-        handleClick={routeToPayment}
+        handleClick={routeToPaymentView}
       >
         Confirm and continue
       </Button>
