@@ -6,7 +6,11 @@ const axiosInstance = axios.create({
   cancelToken: source.token,
 });
 
-export async function queryFixerAPI({ queryKey }: any) {
+interface Props {
+  queryKey: Array<any>;
+}
+
+export async function queryFixerAPI({ queryKey }: Props) {
   const [, { url }] = queryKey;
 
   const { data } = await axiosInstance.get(url);

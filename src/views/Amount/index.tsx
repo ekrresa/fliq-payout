@@ -1,10 +1,12 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router';
 import { useQuery } from 'react-query';
 import MoonLoader from 'react-spinners/MoonLoader';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 import { Button } from '../../components/Button';
-import { ChangeProps, InputSelect } from './InputSelect';
+import { InputChangeProps, InputSelect, SelectChangeProps } from './InputSelect';
 import { TransferDetails } from './TransferDetails';
 import { queryFixerAPI } from '../../helpers/axios';
 import { useCheckout } from '../../shared/CheckoutContext';
@@ -15,12 +17,26 @@ const ONE_HOUR_IN_MILLISECONDS = 3600000;
 
 export default function Amount() {
   const history = useHistory();
-  const { saveData } = useCheckout();
+  const { saveTransferDetails } = useCheckout();
 
-  const [fromCurrency, setFromCurrency] = useState('');
-  const [toCurrency, setToCurrency] = useState('');
-  const [fromAmount, setFromAmount] = useState(0);
-  const [originalAmount, setOriginalAmount] = useState(0);
+  const { handleSubmit, errors, setFieldError, setFieldValue, values } = useFormik({
+    validateOnBlur: false,
+    validateOnChange: false,
+    initialValues: {
+      exchangeRate: 0,
+      fromAmount: 0,
+      originalAmount: 0,
+      fromCurrency: '',
+      toCurrency: '',
+      toAmount: 0,
+      transferFee: 0,
+    },
+    validationSchema: validationSchema,
+    onSubmit: values => {
+      saveTransferDetails(values);
+      history.push('/?stage=recipient');
+    },
+  });
 
   // Does conversion of amount between currencies chosen.
   // Rate is cached for 1 hour
@@ -28,12 +44,17 @@ export default function Amount() {
     [
       'exchange',
       {
-        url: `/convert?access_key=${FIXER_APIKEY}&from=${fromCurrency}&to=${toCurrency}&amount=${fromAmount}`,
+        url: `/convert?access_key=${FIXER_APIKEY}&from=${values.fromCurrency}&to=${values.toCurrency}&amount=${values.fromAmount}`,
       },
     ],
     queryFixerAPI,
     {
-      enabled: !!(fromCurrency && fromAmount && toCurrency),
+      enabled: !!(
+        values.fromCurrency &&
+        values.fromAmount &&
+        !errors.fromAmount &&
+        values.toCurrency
+      ),
       staleTime: ONE_HOUR_IN_MILLISECONDS,
     }
   );
@@ -43,56 +64,69 @@ export default function Amount() {
     [
       'transferFee',
       {
-        url: `/convert?access_key=${FIXER_APIKEY}&from=USD&to=${fromCurrency}&amount=${TRANSFER_FEE}`,
+        url: `/convert?access_key=${FIXER_APIKEY}&from=USD&to=${values.fromCurrency}&amount=${TRANSFER_FEE}`,
       },
     ],
     queryFixerAPI,
-    { enabled: !!fromCurrency, staleTime: ONE_HOUR_IN_MILLISECONDS }
+    { enabled: !!values.fromCurrency, staleTime: ONE_HOUR_IN_MILLISECONDS }
   );
 
-  // TODO: Add e typings
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
+  useEffect(() => {
+    if (exchangeData?.success === true) {
+      setFieldValue('toAmount', Math.floor((exchangeData.result * 100) / 100));
+      setFieldValue('exchangeRate', exchangeData.info.rate);
+    }
+  }, [exchangeData, setFieldValue]);
 
-    saveData({
-      fromAmount,
-      fromCurrency,
-      toAmount: exchangeData?.result,
-      toCurrency,
-      originalAmount,
-      exchangeRate: exchangeData?.info?.rate,
-      transferFee: transferFeeData?.result,
-    });
+  useEffect(() => {
+    if (transferFeeData?.success === true) {
+      setFieldValue('transferFee', transferFeeData.result);
+    }
+  }, [transferFeeData?.success, transferFeeData?.result, setFieldValue]);
 
-    // route to recipient view
-    history.push('/?stage=recipient');
-  };
+  useEffect(() => {
+    if (values.originalAmount && transferFeeData?.success === true) {
+      const amountToConvert = values.originalAmount - transferFeeData.result;
+      setFieldValue('fromAmount', Math.floor(amountToConvert * 100) / 100, false);
+    }
+  }, [
+    setFieldValue,
+    transferFeeData?.success,
+    transferFeeData?.result,
+    values.originalAmount,
+  ]);
 
-  const handleInputSelect = useCallback(
-    (data: ChangeProps | null) => {
-      if (!data) return;
+  useEffect(() => {
+    if (values.fromAmount && values.fromAmount <= 0) {
+      setFieldError(
+        'fromAmount',
+        `Invalid Amount: Minimum amount is ${Math.floor((values.transferFee + 1) * 100) / 100}`
+      );
+    } else {
+      setFieldError('fromAmount', '');
+    }
+  }, [setFieldError, values.fromAmount, values.transferFee]);
 
-      const { amount, from_currency, to_currency } = data;
+  useEffect(() => {
+    if (values.toAmount) {
+      setFieldError('toAmount', '');
+    }
+  }, [setFieldError, values.toAmount]);
 
-      if (from_currency) {
-        setFromCurrency(from_currency);
-      }
-
-      if (amount) {
-        setOriginalAmount(Number(amount));
-      }
-
-      if (amount && transferFeeData) {
-        const parsedAmount = Number(amount);
-        const amountToConvert = parsedAmount - transferFeeData.result;
-        setFromAmount(amountToConvert);
-      }
-
-      if (to_currency) {
-        setToCurrency(to_currency);
-      }
+  const handleInput = useCallback(
+    (data: InputChangeProps) => {
+      const { amount, name } = data;
+      setFieldValue(name, Number(amount));
     },
-    [transferFeeData]
+    [setFieldValue]
+  );
+
+  const handleSelect = useCallback(
+    (data: SelectChangeProps) => {
+      const { currency, name } = data;
+      setFieldValue(name, currency);
+    },
+    [setFieldValue]
   );
 
   return (
@@ -101,7 +135,14 @@ export default function Amount() {
       <h2 className="text-purple-light text-sm">Send money internationally</h2>
 
       <form className="mt-8" onSubmit={handleSubmit}>
-        <InputSelect label="You send" name="from_currency" handleChange={handleInputSelect} />
+        <InputSelect
+          label="You send"
+          inputName="originalAmount"
+          selectName="fromCurrency"
+          onInputChange={handleInput}
+          onSelectChange={handleSelect}
+          errorMessage={errors.fromAmount}
+        />
 
         {fetchingExchangeData ? (
           <div className="my-4 ml-4">
@@ -113,13 +154,13 @@ export default function Amount() {
               size={25}
             />
           </div>
-        ) : exchangeData ? (
+        ) : !errors.fromAmount && exchangeData ? (
           <TransferDetails
-            currency={fromCurrency}
+            currency={values.fromCurrency}
             defaultTransferFee={TRANSFER_FEE}
             transferFee={transferFeeData?.result}
-            amountToBeSent={fromAmount}
-            exchangeCurrency={toCurrency}
+            amountToBeSent={values.fromAmount}
+            exchangeCurrency={values.toCurrency}
             exchangeRate={exchangeData?.info?.rate}
           />
         ) : (
@@ -128,9 +169,14 @@ export default function Amount() {
 
         <InputSelect
           label="Recipient gets"
-          name="to_currency"
-          handleChange={handleInputSelect}
-          value={exchangeData?.result}
+          onInputChange={handleInput}
+          onSelectChange={handleSelect}
+          inputName="toAmount"
+          selectName="toCurrency"
+          value={
+            exchangeData?.result ? String(Math.floor(exchangeData?.result * 100) / 100) : ''
+          }
+          errorMessage={errors.toCurrency}
           readonly
         />
 
@@ -146,3 +192,24 @@ export default function Amount() {
     </section>
   );
 }
+
+const validationSchema = Yup.object({
+  fromAmount: Yup.number()
+    .positive('Please ensure you have entered a valid amount, and selected the currencies')
+    .required('Please enter a valid amount'),
+  toAmount: Yup.number()
+    .positive('Please ensure you have entered a valid amount, and selected the currencies')
+    .required('Please ensure you have entered a valid amount, and selected the currencies'),
+  originalAmount: Yup.number()
+    .integer('Amount is not valid')
+    .positive('Amount is not valid')
+    .required('Please enter a valid amount'),
+  fromCurrency: Yup.string().required('Please select the currency to convert from'),
+  toCurrency: Yup.string().required('Please select the currency to convert to'),
+  exchangeRate: Yup.number()
+    .positive()
+    .required('Please ensure you have entered a valid amount, and selected the currencies'),
+  transferFee: Yup.number()
+    .positive()
+    .required('Please ensure you have entered a valid amount, and selected the currencies'),
+});

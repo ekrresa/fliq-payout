@@ -1,7 +1,19 @@
 import { useContext, createContext, useState, PropsWithChildren } from 'react';
 
-const initialState: Record<string, any> = {};
-const CheckoutContext = createContext(initialState);
+type CheckoutContextType = {
+  recipient: Record<string, any>;
+  transfer: Record<string, any>;
+  saveRecipientInfo: (payload: any) => void;
+  saveTransferDetails: (payload: any) => void;
+};
+
+const initialState = {
+  transfer: {},
+  recipient: {},
+  saveRecipientInfo: () => {},
+  saveTransferDetails: () => {},
+};
+const CheckoutContext = createContext<CheckoutContextType>(initialState);
 
 function useCheckout() {
   const context = useContext(CheckoutContext);
@@ -18,12 +30,16 @@ interface Props extends PropsWithChildren<unknown> {}
 function CheckoutProvider({ children }: Props) {
   const [state, setState] = useState(initialState);
 
-  const saveData = (data: any) => {
-    setState({ ...state, ...data });
+  const saveTransferDetails = (payload: any) => {
+    setState({ ...state, transfer: { ...state.transfer, ...payload } });
+  };
+
+  const saveRecipientInfo = (payload: any) => {
+    setState({ ...state, recipient: { ...state.recipient, ...payload } });
   };
 
   return (
-    <CheckoutContext.Provider value={{ ...state, saveData }}>
+    <CheckoutContext.Provider value={{ ...state, saveRecipientInfo, saveTransferDetails }}>
       {children}
     </CheckoutContext.Provider>
   );

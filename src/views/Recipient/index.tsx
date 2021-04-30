@@ -1,29 +1,54 @@
-import { useState } from 'react';
 import { useHistory } from 'react-router';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@reach/tabs';
 import '@reach/tabs/styles.css';
 
 import { Button } from '../../components/Button';
 import { FormControl } from '../../components/FormControl';
 import { useCheckout } from '../../shared/CheckoutContext';
+import { isObjectEmpty } from '../../helpers/utils';
 
 export default function Recipient() {
   const history = useHistory();
-  const { saveData } = useCheckout();
+  const { saveRecipientInfo, transfer } = useCheckout();
 
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [accountNumber, setAccountNumber] = useState('');
-  const [swiftCode, setSwiftCode] = useState('');
+  const { handleBlur, handleSubmit, handleChange, errors, values, setErrors } = useFormik({
+    initialValues: {
+      accountNumber: '',
+      email: '',
+      iban: '',
+      name: '',
+      swiftCode: '',
+    },
+    validationSchema: validationSchema,
+    onSubmit: values => {
+      if (!values.iban && !values.accountNumber) {
+        setErrors({
+          accountNumber: 'Please enter one of iban or account number',
+          iban: 'Please enter one of iban or account number',
+        });
+        return;
+      }
 
-  // TODO: Add e typings
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
+      if (values.iban && values.accountNumber) {
+        setErrors({
+          accountNumber: 'Please enter one of iban or account number',
+          iban: 'Please enter one of iban or account number',
+        });
+        return;
+      }
 
-    saveData({ email, name, accountNumber, swiftCode });
+      saveRecipientInfo(values);
 
-    history.push('/?stage=review');
-  };
+      history.push('/?stage=review');
+    },
+  });
+
+  if (isObjectEmpty(transfer)) {
+    history.push('/?stage=amount');
+    return null;
+  }
 
   return (
     <section>
@@ -35,14 +60,22 @@ export default function Recipient() {
       <form onSubmit={handleSubmit}>
         <FormControl
           label="Their email (optional)"
-          id="recipient_email"
-          onChange={setEmail}
+          id="email"
+          name="email"
+          onBlur={handleBlur}
+          onChange={handleChange}
           type="email"
+          errorMessage={errors.email}
+          value={values.email}
         />
         <FormControl
           label="Full name of the account holder"
-          id="recipient_name"
-          onChange={setName}
+          id="name"
+          name="name"
+          onBlur={handleBlur}
+          onChange={handleChange}
+          errorMessage={errors.name}
+          value={values.name}
         />
 
         <h3 className="font-medium text-purple-dark text-lg">Bank details</h3>
@@ -56,28 +89,40 @@ export default function Recipient() {
               <Tab className="px-8 pb-2 focus:outline-none">Outside Europe</Tab>
             </TabList>
 
-            <TabPanels className="mt-4">
-              <TabPanel>
+            <TabPanels className="mt-4 focus:outline-none">
+              <TabPanel className="focus:outline-none">
                 <FormControl
                   label="IBAN"
                   id="iban"
+                  name="iban"
                   placeholder="DE98370440018929829032"
-                  onChange={setAccountNumber}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  errorMessage={errors.iban}
+                  value={values.iban}
                 />
               </TabPanel>
               <TabPanel>
                 <FormControl
                   label="SWIFT / BIC code"
-                  id="swift_code"
+                  id="swiftCode"
+                  name="swiftCode"
                   placeholder="BUKBGB22"
-                  onChange={setSwiftCode}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  errorMessage={errors.swiftCode}
+                  value={values.swiftCode}
                 />
 
                 <FormControl
                   label="IBAN / Account Number"
                   id="accountNumber"
+                  name="accountNumber"
                   placeholder="01234567891"
-                  onChange={setAccountNumber}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  errorMessage={errors.accountNumber}
+                  value={values.accountNumber}
                 />
               </TabPanel>
             </TabPanels>
@@ -91,3 +136,15 @@ export default function Recipient() {
     </section>
   );
 }
+
+const validationSchema = Yup.object().shape({
+  email: Yup.string().trim().lowercase().email(),
+  name: Yup.string().required("Please enter the recipient's name"),
+  accountNumber: Yup.string().matches(/^\d+$/),
+  iban: Yup.string().trim(),
+  swiftCode: Yup.string().when('accountNumber', {
+    is: (val: string) => val?.length > 0,
+    then: Yup.string().required(),
+    otherwise: Yup.string().optional(),
+  }),
+});
