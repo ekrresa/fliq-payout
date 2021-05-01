@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const source = axios.CancelToken.source();
 const axiosInstance = axios.create({
-  baseURL: 'http://data.fixer.io/api',
+  baseURL: 'https://data.fixer.io/api',
   cancelToken: source.token,
 });
 
