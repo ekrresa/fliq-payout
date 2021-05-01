@@ -51,7 +51,7 @@ export function InputSelect({
 
           <CurrencyInput
             allowNegativeValue={false}
-            className="block w-full text-xl mt-1 focus:outline-none disabled:bg-white"
+            className="block font-medium w-full text-xl text-purple-dark mt-1 focus:outline-none disabled:bg-white"
             id={inputName}
             name={inputName}
             placeholder=""

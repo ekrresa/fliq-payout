@@ -9,8 +9,8 @@ const viewMap = ['amount', 'recipient', 'review', 'payment'];
 
 export function NavBar() {
   const location = useLocation();
-  const currentView = qs.parse(location.search)?.stage as string | undefined;
-  const currentViewIndex = currentView ? viewMap.indexOf(currentView) : 0;
+  const currentView = qs.parse(location.search)?.stage ?? 'amount';
+  const currentViewIndex = currentView ? viewMap.indexOf(currentView as string) : 0;
 
   return (
     <header className="bg-white px-4 sm:px-6 py-6" data-testid="navbar">
@@ -18,14 +18,15 @@ export function NavBar() {
         <img className="w-16 sm:w-20" src={Logo} alt="site logo" />
 
         <ul className="max-w-3xl mx-8 flex justify-between list-none w-full">
-          <CheckoutStep
-            completed={currentViewIndex > 0}
-            isActive={!currentView || currentView === 'amount'}
-          >
+          <CheckoutStep completed={currentViewIndex > 0} isActive={currentView === 'amount'}>
             <Link
               to="/"
-              className={`font-semibold ${
-                currentViewIndex > 0 ? 'text-purple-bright' : 'text-main-lightgrey'
+              className={`font-medium ${
+                currentView === 'amount'
+                  ? 'text-main-lightgrey'
+                  : currentViewIndex > 0
+                  ? 'text-purple-bright'
+                  : 'text-main-dullgrey'
               }`}
             >
               Amount
@@ -37,8 +38,12 @@ export function NavBar() {
           >
             <Link
               to="/?stage=recipient"
-              className={`font-semibold ${
-                currentViewIndex > 1 ? 'text-purple-bright' : 'text-main-lightgrey'
+              className={`font-medium ${
+                currentView === 'recipient'
+                  ? 'text-main-lightgrey'
+                  : currentViewIndex > 1
+                  ? 'text-purple-bright'
+                  : 'text-main-dullgrey'
               }`}
             >
               Recipient
@@ -47,8 +52,12 @@ export function NavBar() {
           <CheckoutStep completed={currentViewIndex > 2} isActive={currentView === 'review'}>
             <Link
               to="/?stage=review"
-              className={`font-semibold ${
-                currentViewIndex > 2 ? 'text-purple-bright' : 'text-main-lightgrey'
+              className={`font-medium ${
+                currentView === 'review'
+                  ? 'text-main-lightgrey'
+                  : currentViewIndex > 2
+                  ? 'text-purple-bright'
+                  : 'text-main-dullgrey'
               }`}
             >
               Review
@@ -57,8 +66,12 @@ export function NavBar() {
           <CheckoutStep completed={currentViewIndex > 3} isActive={currentView === 'payment'}>
             <Link
               to="/?stage=payment"
-              className={`font-semibold ${
-                currentViewIndex > 3 ? 'text-purple-bright' : 'text-main-lightgrey'
+              className={`font-medium ${
+                currentView === 'payment'
+                  ? 'text-main-lightgrey'
+                  : currentViewIndex > 3
+                  ? 'text-purple-bright'
+                  : 'text-main-dullgrey'
               }`}
             >
               Pay

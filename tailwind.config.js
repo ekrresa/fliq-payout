@@ -34,7 +34,20 @@ module.exports = {
           spark2: '#F4F3F8',
           grey: '#404040',
           lightgrey: '#636166',
+          dullgrey: '#B7B7B7',
         },
+      },
+      fontFamily: {
+        sans: [
+          'Sailec',
+          'ui-sans-serif',
+          'system-ui',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          'Roboto',
+          'Noto Sans',
+          'sans-serif',
+        ],
       },
       maxWidth: {
         6: '6rem',

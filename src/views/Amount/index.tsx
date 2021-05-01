@@ -131,8 +131,10 @@ export default function Amount() {
 
   return (
     <section data-testid="amount-view">
-      <h1 className="text-purple-dark text-lg font-medium">One-time Payout</h1>
-      <h2 className="text-purple-light text-sm">Send money internationally</h2>
+      <h1 className="text-purple-dark text-xl font-medium">One-time Payout</h1>
+      <h2 className="font-normal mt-1 text-purple-light text-base">
+        Send money internationally
+      </h2>
 
       <form className="mt-8" onSubmit={handleSubmit} data-testid="amount-form">
         <InputSelect

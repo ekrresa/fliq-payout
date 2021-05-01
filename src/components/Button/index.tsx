@@ -14,7 +14,7 @@ export function Button({
 }: Props) {
   return (
     <button
-      className={'font-semibold rounded px-4 py-4 text-sm ' + className}
+      className={'font-medium rounded-md px-4 py-4 text-base ' + className}
       onClick={handleClick}
       type={type}
     >

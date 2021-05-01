@@ -2,6 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Sailec';
+  src: url(./assets/fonts/Sailec\ Bold.woff2);
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Sailec';
+  src: url(./assets/fonts/Sailec\ Medium.woff2);
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Sailec';
+  src: url(./assets/fonts/Sailec\ Light.woff2);
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Sailec';
+  src: url(./assets/fonts/Sailec\ Thin.woff2);
+  font-weight: 300;
+  font-style: normal;
+}
+
 body {
   background: #fbfbfb;
 }

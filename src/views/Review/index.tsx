@@ -24,9 +24,7 @@ export default function Review() {
 
   return (
     <section>
-      <h1 className="text-purple-dark text-2xl font-medium">
-        Review details of your transfer
-      </h1>
+      <h1 className="text-purple-dark text-xl font-medium">Review details of your transfer</h1>
 
       <hr className="my-4" />
 
