@@ -31,3 +31,34 @@
 body {
   background: #fbfbfb;
 }
+
+.modal {
+  position: absolute;
+  width: 96%;
+  max-width: 30em;
+  display: flex;
+  top: 15%;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  padding: 1.7em;
+  background: #fff;
+  border-radius: 4px;
+  outline: transparent;
+}
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.54);
+}
+
+.ReactModal__Overlay {
+  opacity: 0;
+  transition: opacity 200ms ease-in;
+}
+
+.ReactModal__Overlay--after-open {
+  opacity: 1;
+}

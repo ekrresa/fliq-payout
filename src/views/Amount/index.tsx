@@ -1,16 +1,20 @@
-import { useCallback, useEffect } from 'react';
+import { Suspense, lazy, useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { useQuery } from 'react-query';
+import ReactModal from 'react-modal';
 import MoonLoader from 'react-spinners/MoonLoader';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import debounce from 'lodash.debounce';
 
 import { Button } from '../../components/Button';
+import { Loader } from '../../components/Loader';
 import { InputChangeProps, InputSelect, SelectChangeProps } from './InputSelect';
 import { TransferDetails } from './TransferDetails';
 import { queryFixerAPI } from '../../helpers/axios';
 import { useCheckout } from '../../shared/CheckoutContext';
+
+const CompareRates = lazy(() => import('./CompareRates'));
 
 const TRANSFER_FEE = Number(process.env.REACT_APP_TRANSFER_FEE);
 const FIXER_APIKEY = process.env.REACT_APP_FIXER_APIKEY;
@@ -19,6 +23,8 @@ const ONE_HOUR_IN_MILLISECONDS = 3600000;
 export default function Amount() {
   const history = useHistory();
   const { saveTransferDetails } = useCheckout();
+
+  const [modal, setModal] = useState(false);
 
   const { handleSubmit, errors, setFieldError, setFieldValue, values } = useFormik({
     validateOnBlur: false,
@@ -183,7 +189,10 @@ export default function Amount() {
         />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
-          <Button className="border border-purple-normal text-purple-normal">
+          <Button
+            className="border border-purple-normal text-purple-normal"
+            onClick={() => setModal(true)}
+          >
             Compare Rates
           </Button>
           <Button
@@ -195,6 +204,24 @@ export default function Amount() {
           </Button>
         </div>
       </form>
+      <ReactModal
+        closeTimeoutMS={200}
+        contentLabel="Search Form"
+        isOpen={modal}
+        onRequestClose={() => {
+          setModal(false);
+        }}
+        className="modal"
+        overlayClassName="overlay"
+        ariaHideApp={false}
+      >
+        <Suspense fallback={<Loader />}>
+          <CompareRates
+            fromCurrencyProp={values.fromCurrency}
+            toCurrencyProp={values.toCurrency}
+          />
+        </Suspense>
+      </ReactModal>
     </section>
   );
 }
