@@ -1,30 +1,34 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from 'react-query';
 import { ErrorBoundary } from 'react-error-boundary';
 
-import { CheckoutProvider } from './shared/CheckoutContext';
+import { CheckoutProvider, useContextValue } from './shared/CheckoutContext';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './tailwind.output.css';
 import { ErrorFallback } from './shared/ErrorBoundary';
 
-const queryClient = new QueryClient({
-  defaultOptions: { queries: { refetchOnWindowFocus: false } },
-});
+// This may be unorthodox but I set it up this way
+// to be able to pass in the value from useContextValue hook to CheckoutProvider
+// This makes it easy to mock checkoutContext in the tests
+function Render() {
+  const value = useContextValue();
 
-ReactDOM.render(
-  <React.StrictMode>
+  return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <BrowserRouter>
-        <CheckoutProvider>
-          <QueryClientProvider client={queryClient}>
-            <App />
-          </QueryClientProvider>
+        <CheckoutProvider contextValue={value}>
+          <App />
         </CheckoutProvider>
       </BrowserRouter>
     </ErrorBoundary>
+  );
+}
+
+ReactDOM.render(
+  <React.StrictMode>
+    <Render />
   </React.StrictMode>,
   document.getElementById('root')
 );

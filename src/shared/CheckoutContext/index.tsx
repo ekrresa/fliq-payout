@@ -1,11 +1,19 @@
 import { useContext, createContext, useState, PropsWithChildren } from 'react';
 
-type CheckoutContextType = {
+export type CheckoutContextType = {
   recipient: Record<string, any>;
   transfer: Record<string, any>;
   saveRecipientInfo: (payload: any) => void;
   saveTransferDetails: (payload: any) => void;
 };
+
+interface ProviderProps extends PropsWithChildren<unknown> {
+  contextValue: CheckoutContextType;
+}
+
+function CheckoutProvider({ children, contextValue }: ProviderProps) {
+  return <CheckoutContext.Provider value={contextValue}>{children}</CheckoutContext.Provider>;
+}
 
 const initialState = {
   transfer: {},
@@ -13,7 +21,22 @@ const initialState = {
   saveRecipientInfo: () => {},
   saveTransferDetails: () => {},
 };
+
 const CheckoutContext = createContext<CheckoutContextType>(initialState);
+
+function useContextValue() {
+  const [state, setState] = useState(initialState);
+
+  const saveTransferDetails = (payload: any) => {
+    setState({ ...state, transfer: { ...state.transfer, ...payload } });
+  };
+
+  const saveRecipientInfo = (payload: any) => {
+    setState({ ...state, recipient: { ...state.recipient, ...payload } });
+  };
+
+  return { ...state, saveRecipientInfo, saveTransferDetails };
+}
 
 function useCheckout() {
   const context = useContext(CheckoutContext);
@@ -25,24 +48,4 @@ function useCheckout() {
   return context;
 }
 
-interface Props extends PropsWithChildren<unknown> {}
-
-function CheckoutProvider({ children }: Props) {
-  const [state, setState] = useState(initialState);
-
-  const saveTransferDetails = (payload: any) => {
-    setState({ ...state, transfer: { ...state.transfer, ...payload } });
-  };
-
-  const saveRecipientInfo = (payload: any) => {
-    setState({ ...state, recipient: { ...state.recipient, ...payload } });
-  };
-
-  return (
-    <CheckoutContext.Provider value={{ ...state, saveRecipientInfo, saveTransferDetails }}>
-      {children}
-    </CheckoutContext.Provider>
-  );
-}
-
-export { CheckoutProvider, useCheckout };
+export { CheckoutProvider, useContextValue, useCheckout };
