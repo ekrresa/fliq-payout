@@ -120,6 +120,7 @@ export default function Amount() {
     }
   }, [setFieldError, values.toAmount]);
 
+  // Call the API 500 milliseconds after user stops typing
   const inputHandler = debounce((data: InputChangeProps) => {
     const { amount, name } = data;
     setFieldValue(name, Number(amount));
