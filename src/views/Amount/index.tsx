@@ -224,10 +224,7 @@ export default function Amount() {
         ariaHideApp={false}
       >
         <Suspense fallback={<Loader />}>
-          <CompareRates
-            fromCurrencyProp={values.fromCurrency}
-            toCurrencyProp={values.toCurrency}
-          />
+          <CompareRates />
         </Suspense>
       </ReactModal>
     </section>
