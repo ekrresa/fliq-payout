@@ -20,6 +20,7 @@ module.exports = {
           happy: '#6FAE75',
         },
         purple: {
+          bright: '#4406ec',
           dark: '#2C0C6A',
           light: '#877E9E',
           normal: '#4305EB',
@@ -32,6 +33,7 @@ module.exports = {
           spark: '#F2F2F2',
           spark2: '#F4F3F8',
           grey: '#404040',
+          lightgrey: '#636166',
         },
       },
       maxWidth: {
