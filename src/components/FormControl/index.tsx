@@ -31,7 +31,8 @@ export function FormControl({
         {label}
       </label>
       <input
-        className={`block w-full overflow-hidden px-2 py-3 border rounded ${errorClass}`}
+        className={`block w-full font-medium text-lg text-purple-dark overflow-hidden 
+          px-2 py-3 placeholder-gray-400::placeholder border rounded ${errorClass}`}
         id={id}
         name={name}
         placeholder={placeholder}
