@@ -76,7 +76,7 @@ export default function Payment() {
 
       <Button
         className="bg-green-happy w-full mt-8 text-white text-base"
-        handleClick={() => {
+        onClick={() => {
           history.push('/');
         }}
       >

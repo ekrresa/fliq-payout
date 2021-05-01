@@ -69,7 +69,7 @@ export default function Review() {
 
       <Button
         className="bg-green-happy w-full mt-8 text-white text-base"
-        handleClick={routeToPaymentView}
+        onClick={routeToPaymentView}
       >
         Confirm and continue
       </Button>
