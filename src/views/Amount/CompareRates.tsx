@@ -3,12 +3,12 @@ import { useQuery } from 'react-query';
 import Select from 'react-select';
 
 import { queryFixerAPI } from '../../helpers/axios';
-import { useCountries } from './utils/countryMap';
+import { processCountryCodes } from './utils/countryMap';
 
 const FIXER_APIKEY = process.env.REACT_APP_FIXER_APIKEY;
+const currencies = processCountryCodes();
 
 export default function CompareRates() {
-  const countries = useCountries();
   const [fromCurrency, setFromCurrency] = useState('');
   const [toCurrency, setToCurrency] = useState('');
 
@@ -42,7 +42,7 @@ export default function CompareRates() {
             From
           </label>
           <Select
-            options={countries}
+            options={currencies}
             onChange={(item: any) => {
               setFromCurrency(item.value);
             }}
@@ -60,7 +60,7 @@ export default function CompareRates() {
             To
           </label>
           <Select
-            options={countries}
+            options={currencies}
             onChange={(item: any) => {
               setToCurrency(item.value);
             }}
