@@ -1,15 +1,16 @@
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+
 import Logo from '../../assets/images/logo.svg';
 import Close from '../../assets/images/close.svg';
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 
 export function NavBar() {
   return (
-    <header className="bg-white p-6" data-testid="navbar">
+    <header className="bg-white px-4 sm:px-6 py-6" data-testid="navbar">
       <div className="mx-auto max-w-6xl flex justify-between items-center">
-        <img className="w-20" src={Logo} alt="site logo" />
+        <img className="w-16 sm:w-20" src={Logo} alt="site logo" />
 
-        <ul className="max-w-3xl flex justify-between list-none w-full">
+        <ul className="max-w-3xl mx-8 flex justify-between list-none w-full">
           <CheckoutStep>
             <Link to="/">Amount</Link>
           </CheckoutStep>

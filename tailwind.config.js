@@ -9,8 +9,7 @@ module.exports = {
       'src/**/*.tsx',
     ],
   },
-  darkMode: false, // or 'media' or 'class'
-  important: true,
+  darkMode: false,
   theme: {
     extend: {
       animation: {
@@ -36,6 +35,7 @@ module.exports = {
         },
       },
       maxWidth: {
+        6: '6rem',
         9: '9rem',
       },
       minWidth: {
@@ -44,6 +44,7 @@ module.exports = {
       outline: {
         solid: '1px solid #4305EB',
       },
+      screens: { sm: '560px' },
     },
   },
   variants: {

@@ -64,7 +64,8 @@ export function InputSelect({
           />
         </div>
 
-        <div className="bg-main-spark2 flex flex-col flex-1 max-w-9 justify-center px-4">
+        <div className="bg-main-spark2 flex flex-col flex-1 max-w-6 sm:max-w-9 justify-center sm:px-4">
+          <label htmlFor={selectName}></label>
           <StyledSelect
             options={countries}
             isClearable={false}
@@ -73,6 +74,10 @@ export function InputSelect({
               onSelectChange({ name: selectName, currency: item.value });
             }}
             name={selectName}
+            aria-label={selectName}
+            aria-labelledby={selectName}
+            data-testid={selectName}
+            inputId={selectName}
           />
         </div>
       </div>
