@@ -1,11 +1,18 @@
 import { MemoryRouter } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from 'react-query';
 import '@testing-library/react/dont-cleanup-after-each';
 import { render, screen, cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 import AmountView from './index';
-import { CheckoutProvider } from '../../shared/CheckoutContext';
+import { CheckoutProvider, CheckoutContextType } from '../../shared/CheckoutContext';
+
+const mockContextValue: CheckoutContextType = {
+  transfer: {},
+  recipient: {},
+  saveRecipientInfo: () => {},
+  saveTransferDetails: () => {},
+};
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { refetchOnWindowFocus: false } },
@@ -15,7 +22,7 @@ describe('Amount view', () => {
   beforeAll(() => {
     render(
       <MemoryRouter>
-        <CheckoutProvider>
+        <CheckoutProvider contextValue={mockContextValue}>
           <QueryClientProvider client={queryClient}>
             <AmountView />
           </QueryClientProvider>
@@ -24,7 +31,9 @@ describe('Amount view', () => {
     );
   });
 
-  afterAll(cleanup);
+  afterAll(() => {
+    cleanup();
+  });
 
   test('should render the amount view by default', async () => {
     const amountView = await screen.findByTestId('amount-view');

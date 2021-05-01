@@ -51,7 +51,7 @@ export default function Recipient() {
   }
 
   return (
-    <section>
+    <section data-testid="recipient-view">
       <h1 className="text-purple-dark text-xl font-medium">Your Recipient</h1>
       <h2 className="font-normal mt-1 text-purple-light text-base">
         Who are you sending money to?

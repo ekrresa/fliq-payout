@@ -13,11 +13,11 @@ export function NavBar() {
   const currentViewIndex = currentView ? viewMap.indexOf(currentView as string) : 0;
 
   return (
-    <header className="bg-white px-4 sm:px-6 py-6" data-testid="navbar">
-      <div className="mx-auto max-w-6xl flex justify-between items-center">
+    <header className="bg-white px-4 sm:px-6 py-6 pt-8" data-testid="navbar">
+      <div className="mx-auto max-w-6xl flex flex-wrap sm:flex-nowrap justify-between items-center">
         <img className="w-16 sm:w-20" src={Logo} alt="site logo" />
 
-        <ul className="max-w-3xl mx-8 flex justify-between list-none w-full">
+        <ul className="max-w-3xl sm:mx-8 flex justify-between order-2 sm:order-none mt-8 sm:mt-0 list-none w-full">
           <CheckoutStep completed={currentViewIndex > 0} isActive={currentView === 'amount'}>
             <Link
               to="/"

@@ -1,5 +1,6 @@
 import { Suspense, lazy } from 'react';
 import { Switch, useLocation } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import qs from 'query-string';
 
 import { Wrapper } from './components/Wrapper';
@@ -11,6 +12,10 @@ const Payment = lazy(() => import('./views/Payment'));
 const Recipient = lazy(() => import('./views/Recipient'));
 const Review = lazy(() => import('./views/Review'));
 
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { refetchOnWindowFocus: false } },
+});
+
 function App() {
   const location = useLocation();
   const parsedString = (qs.parse(location.search) as unknown) as Record<string, string>;
@@ -18,7 +23,7 @@ function App() {
   const renderedComponent = resolveView(parsedString.stage);
 
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <NavBar />
 
       <Wrapper>
@@ -26,7 +31,7 @@ function App() {
           <Switch>{renderedComponent}</Switch>
         </Suspense>
       </Wrapper>
-    </>
+    </QueryClientProvider>
   );
 }
 

@@ -142,6 +142,14 @@ export default function Amount() {
         Send money internationally
       </h2>
 
+      {transferFeeData?.error && (
+        <div className="font-medium mt-4 text-red-500">{transferFeeData?.error?.info}</div>
+      )}
+
+      {exchangeData?.error && (
+        <div className="font-medium mt-4 text-red-500">{exchangeData?.error?.info}</div>
+      )}
+
       <form className="mt-8" onSubmit={handleSubmit} data-testid="amount-form">
         <InputSelect
           label="You send"
@@ -162,7 +170,7 @@ export default function Amount() {
               size={25}
             />
           </div>
-        ) : !errors.fromAmount && exchangeData ? (
+        ) : !errors.fromAmount && exchangeData?.result ? (
           <TransferDetails
             currency={values.fromCurrency}
             defaultTransferFee={TRANSFER_FEE}
@@ -216,10 +224,7 @@ export default function Amount() {
         ariaHideApp={false}
       >
         <Suspense fallback={<Loader />}>
-          <CompareRates
-            fromCurrencyProp={values.fromCurrency}
-            toCurrencyProp={values.toCurrency}
-          />
+          <CompareRates />
         </Suspense>
       </ReactModal>
     </section>
