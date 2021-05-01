@@ -106,10 +106,10 @@ const CheckoutStep = styled.li<{ isActive: boolean; completed: boolean }>`
     margin: 0 auto 10px auto;
     border-radius: 50%;
     background-color: #4305eb;
-    z-index: 6;
     position: absolute;
     left: 48%;
     top: -14px;
+    z-index: 1;
   }
 
   &::after {
@@ -124,10 +124,8 @@ const CheckoutStep = styled.li<{ isActive: boolean; completed: boolean }>`
         : css`
             background: #ededed;
           `}
-
     top: -10px;
     left: 51%;
-    z-index: 1;
     position: absolute;
   }
 
