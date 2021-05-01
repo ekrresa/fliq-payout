@@ -4,6 +4,7 @@ import { useQuery } from 'react-query';
 import MoonLoader from 'react-spinners/MoonLoader';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import debounce from 'lodash.debounce';
 
 import { Button } from '../../components/Button';
 import { InputChangeProps, InputSelect, SelectChangeProps } from './InputSelect';
@@ -52,7 +53,7 @@ export default function Amount() {
       enabled: !!(
         values.fromCurrency &&
         values.fromAmount &&
-        !errors.fromAmount &&
+        values.fromAmount > 0 &&
         values.toCurrency
       ),
       staleTime: ONE_HOUR_IN_MILLISECONDS,
@@ -113,13 +114,12 @@ export default function Amount() {
     }
   }, [setFieldError, values.toAmount]);
 
-  const handleInput = useCallback(
-    (data: InputChangeProps) => {
-      const { amount, name } = data;
-      setFieldValue(name, Number(amount));
-    },
-    [setFieldValue]
-  );
+  const inputHandler = debounce((data: InputChangeProps) => {
+    const { amount, name } = data;
+    setFieldValue(name, Number(amount));
+  }, 500);
+
+  const handleInput = useCallback(inputHandler, [inputHandler]);
 
   const handleSelect = useCallback(
     (data: SelectChangeProps) => {
@@ -134,7 +134,7 @@ export default function Amount() {
       <h1 className="text-purple-dark text-lg font-medium">One-time Payout</h1>
       <h2 className="text-purple-light text-sm">Send money internationally</h2>
 
-      <form className="mt-8" onSubmit={handleSubmit}>
+      <form className="mt-8" onSubmit={handleSubmit} data-testid="amount-form">
         <InputSelect
           label="You send"
           inputName="originalAmount"
@@ -180,7 +180,7 @@ export default function Amount() {
           readonly
         />
 
-        <div className="grid grid-cols-2 gap-4 mt-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
           <Button className="border border-purple-normal text-purple-normal">
             Compare Rates
           </Button>
