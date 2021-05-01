@@ -37,6 +37,11 @@ export default function CompareRates({ fromCurrencyProp, toCurrencyProp }: Props
   return (
     <section className="w-full">
       <h2 className="mb-6 text-purple-dark text-2xl font-medium">Compare exchange rates</h2>
+
+      {exchangeRate?.error && (
+        <div className="font-medium mt-4 text-red-500">{exchangeRate?.error?.info}</div>
+      )}
+
       <form>
         <div className="mb-4">
           <label
