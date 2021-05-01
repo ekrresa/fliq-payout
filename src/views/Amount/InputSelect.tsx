@@ -2,7 +2,7 @@ import ReactSelect from 'react-select';
 import CurrencyInput from 'react-currency-input-field';
 import styled from 'styled-components';
 
-import { useCountries } from './utils/countryMap';
+import { processCountryCodes } from './utils/countryMap';
 
 interface Props {
   errorMessage?: string;
@@ -25,6 +25,8 @@ export interface SelectChangeProps {
   currency: string | undefined;
 }
 
+const currencies = processCountryCodes();
+
 export function InputSelect({
   errorMessage,
   label,
@@ -35,8 +37,6 @@ export function InputSelect({
   readonly,
   value,
 }: Props) {
-  const countries = useCountries();
-
   const errorClass = errorMessage ? 'border-red-500' : 'border-edge';
 
   return (
@@ -67,7 +67,7 @@ export function InputSelect({
         <div className="bg-main-spark2 flex flex-col flex-1 max-w-6 sm:max-w-9 justify-center sm:px-4">
           <label htmlFor={selectName}></label>
           <StyledSelect
-            options={countries}
+            options={currencies}
             isClearable={false}
             isSearchable
             onChange={(item: any) => {
