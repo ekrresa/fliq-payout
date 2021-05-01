@@ -9,8 +9,7 @@ module.exports = {
       'src/**/*.tsx',
     ],
   },
-  darkMode: false, // or 'media' or 'class'
-  important: true,
+  darkMode: false,
   theme: {
     extend: {
       animation: {
@@ -21,6 +20,7 @@ module.exports = {
           happy: '#6FAE75',
         },
         purple: {
+          bright: '#4406ec',
           dark: '#2C0C6A',
           light: '#877E9E',
           normal: '#4305EB',
@@ -33,9 +33,24 @@ module.exports = {
           spark: '#F2F2F2',
           spark2: '#F4F3F8',
           grey: '#404040',
+          lightgrey: '#636166',
+          dullgrey: '#B7B7B7',
         },
       },
+      fontFamily: {
+        sans: [
+          'Sailec',
+          'ui-sans-serif',
+          'system-ui',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          'Roboto',
+          'Noto Sans',
+          'sans-serif',
+        ],
+      },
       maxWidth: {
+        6: '6rem',
         9: '9rem',
       },
       minWidth: {
@@ -44,6 +59,7 @@ module.exports = {
       outline: {
         solid: '1px solid #4305EB',
       },
+      screens: { sm: '560px' },
     },
   },
   variants: {

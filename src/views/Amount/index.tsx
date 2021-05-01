@@ -1,15 +1,20 @@
-import { useCallback, useEffect } from 'react';
+import { Suspense, lazy, useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { useQuery } from 'react-query';
+import ReactModal from 'react-modal';
 import MoonLoader from 'react-spinners/MoonLoader';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import debounce from 'lodash.debounce';
 
 import { Button } from '../../components/Button';
+import { Loader } from '../../components/Loader';
 import { InputChangeProps, InputSelect, SelectChangeProps } from './InputSelect';
 import { TransferDetails } from './TransferDetails';
 import { queryFixerAPI } from '../../helpers/axios';
 import { useCheckout } from '../../shared/CheckoutContext';
+
+const CompareRates = lazy(() => import('./CompareRates'));
 
 const TRANSFER_FEE = Number(process.env.REACT_APP_TRANSFER_FEE);
 const FIXER_APIKEY = process.env.REACT_APP_FIXER_APIKEY;
@@ -18,6 +23,8 @@ const ONE_HOUR_IN_MILLISECONDS = 3600000;
 export default function Amount() {
   const history = useHistory();
   const { saveTransferDetails } = useCheckout();
+
+  const [modal, setModal] = useState(false);
 
   const { handleSubmit, errors, setFieldError, setFieldValue, values } = useFormik({
     validateOnBlur: false,
@@ -52,7 +59,7 @@ export default function Amount() {
       enabled: !!(
         values.fromCurrency &&
         values.fromAmount &&
-        !errors.fromAmount &&
+        values.fromAmount > 0 &&
         values.toCurrency
       ),
       staleTime: ONE_HOUR_IN_MILLISECONDS,
@@ -113,13 +120,12 @@ export default function Amount() {
     }
   }, [setFieldError, values.toAmount]);
 
-  const handleInput = useCallback(
-    (data: InputChangeProps) => {
-      const { amount, name } = data;
-      setFieldValue(name, Number(amount));
-    },
-    [setFieldValue]
-  );
+  const inputHandler = debounce((data: InputChangeProps) => {
+    const { amount, name } = data;
+    setFieldValue(name, Number(amount));
+  }, 500);
+
+  const handleInput = useCallback(inputHandler, [inputHandler]);
 
   const handleSelect = useCallback(
     (data: SelectChangeProps) => {
@@ -131,10 +137,12 @@ export default function Amount() {
 
   return (
     <section data-testid="amount-view">
-      <h1 className="text-purple-dark text-lg font-medium">One-time Payout</h1>
-      <h2 className="text-purple-light text-sm">Send money internationally</h2>
+      <h1 className="text-purple-dark text-xl font-medium">One-time Payout</h1>
+      <h2 className="font-normal mt-1 text-purple-light text-base">
+        Send money internationally
+      </h2>
 
-      <form className="mt-8" onSubmit={handleSubmit}>
+      <form className="mt-8" onSubmit={handleSubmit} data-testid="amount-form">
         <InputSelect
           label="You send"
           inputName="originalAmount"
@@ -180,8 +188,11 @@ export default function Amount() {
           readonly
         />
 
-        <div className="grid grid-cols-2 gap-4 mt-8">
-          <Button className="border border-purple-normal text-purple-normal">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
+          <Button
+            className="border border-purple-normal text-purple-normal"
+            onClick={() => setModal(true)}
+          >
             Compare Rates
           </Button>
           <Button
@@ -193,6 +204,24 @@ export default function Amount() {
           </Button>
         </div>
       </form>
+      <ReactModal
+        closeTimeoutMS={200}
+        contentLabel="Search Form"
+        isOpen={modal}
+        onRequestClose={() => {
+          setModal(false);
+        }}
+        className="modal"
+        overlayClassName="overlay"
+        ariaHideApp={false}
+      >
+        <Suspense fallback={<Loader />}>
+          <CompareRates
+            fromCurrencyProp={values.fromCurrency}
+            toCurrencyProp={values.toCurrency}
+          />
+        </Suspense>
+      </ReactModal>
     </section>
   );
 }

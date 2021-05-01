@@ -2,20 +2,15 @@ import React from 'react';
 
 interface Props extends React.PropsWithChildren<unknown> {
   className: string;
-  handleClick?: () => void;
+  onClick?: () => void;
   type?: 'button' | 'submit';
 }
 
-export function Button({
-  children,
-  className,
-  handleClick = () => {},
-  type = 'button',
-}: Props) {
+export function Button({ children, className, onClick = () => {}, type = 'button' }: Props) {
   return (
     <button
-      className={'font-semibold rounded px-4 py-4 text-sm ' + className}
-      onClick={handleClick}
+      className={'font-medium rounded-md px-4 py-4 text-base ' + className}
+      onClick={onClick}
       type={type}
     >
       {children}

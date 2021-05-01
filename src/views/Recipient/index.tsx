@@ -52,8 +52,10 @@ export default function Recipient() {
 
   return (
     <section>
-      <h1 className="text-purple-dark text-2xl font-medium">Your Recipient</h1>
-      <h2 className="text-purple-light text-sm">Who are you sending money to?</h2>
+      <h1 className="text-purple-dark text-xl font-medium">Your Recipient</h1>
+      <h2 className="font-normal mt-1 text-purple-light text-base">
+        Who are you sending money to?
+      </h2>
 
       <hr className="my-6" />
 
