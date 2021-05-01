@@ -12,7 +12,7 @@ export default function Payment() {
   const history = useHistory();
   const [value, setValue] = React.useState(0);
   const countdownRef = React.useRef<any>();
-  const { recipient, transfer } = useCheckout();
+  const { recipient, transfer, clearData } = useCheckout();
 
   React.useEffect(() => {
     const interval = setInterval(() => {
@@ -23,12 +23,14 @@ export default function Payment() {
 
     return () => {
       clearInterval(interval);
+      clearData();
     };
-  }, []);
+  }, [clearData]);
 
   React.useEffect(() => {
     if (value === 100) {
       clearInterval(countdownRef.current);
+
       let count = 0;
 
       const newInterval = setInterval(() => {

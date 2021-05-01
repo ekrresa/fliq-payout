@@ -14,6 +14,7 @@ const contextValue: CheckoutContextType = {
   recipient: {},
   saveRecipientInfo: () => {},
   saveTransferDetails: () => {},
+  clearData: () => {},
 };
 
 describe('App', () => {

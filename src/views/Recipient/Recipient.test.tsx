@@ -11,6 +11,7 @@ const mockContextValue: CheckoutContextType = {
   recipient: {},
   saveRecipientInfo: () => {},
   saveTransferDetails: () => {},
+  clearData: () => {},
 };
 
 const mockEmptyContextValue: CheckoutContextType = {
@@ -18,6 +19,7 @@ const mockEmptyContextValue: CheckoutContextType = {
   recipient: {},
   saveRecipientInfo: () => {},
   saveTransferDetails: () => {},
+  clearData: () => {},
 };
 
 describe('Recipient View: Valid Context', () => {

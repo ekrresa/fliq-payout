@@ -12,6 +12,7 @@ const mockContextValue: CheckoutContextType = {
   recipient: {},
   saveRecipientInfo: () => {},
   saveTransferDetails: () => {},
+  clearData: () => {},
 };
 
 const queryClient = new QueryClient({

@@ -5,6 +5,7 @@ export type CheckoutContextType = {
   transfer: Record<string, any>;
   saveRecipientInfo: (payload: any) => void;
   saveTransferDetails: (payload: any) => void;
+  clearData: () => void;
 };
 
 interface ProviderProps extends PropsWithChildren<unknown> {
@@ -20,6 +21,7 @@ const initialState = {
   recipient: {},
   saveRecipientInfo: () => {},
   saveTransferDetails: () => {},
+  clearData: () => {},
 };
 
 const CheckoutContext = createContext<CheckoutContextType>(initialState);
@@ -35,7 +37,11 @@ function useContextValue() {
     setState({ ...state, recipient: { ...state.recipient, ...payload } });
   };
 
-  return { ...state, saveRecipientInfo, saveTransferDetails };
+  const clearData = () => {
+    setState({ ...initialState });
+  };
+
+  return { ...state, saveRecipientInfo, saveTransferDetails, clearData };
 }
 
 function useCheckout() {
